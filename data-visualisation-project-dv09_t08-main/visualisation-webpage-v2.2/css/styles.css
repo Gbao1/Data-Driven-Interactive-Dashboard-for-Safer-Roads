@@ -1,0 +1,691 @@
+/* Base Styles */
+:root {
+  --primary-color: #2c3e50;
+  --secondary-color: #3498db;
+  --accent-color: #e74c3c;
+  --background-color: #f5f7fa;
+  --text-color: #333;
+  --light-gray: #ecf0f1;
+  --medium-gray: #bdc3c7;
+  --dark-gray: #7f8c8d;
+  --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
+
+a {
+  color: var(--secondary-color);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+a:hover {
+  color: var(--primary-color);
+}
+
+/* Layout */
+header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+}
+
+nav li {
+  margin-left: 1.5rem;
+}
+
+nav a {
+  color: white;
+  padding: 0.5rem;
+}
+
+nav a.active,
+nav a:hover {
+  color: var(--secondary-color);
+}
+
+main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+section {
+  margin-bottom: 2rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+}
+
+/* Hero Section */
+.hero {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background-color: var(--primary-color);
+  color: white;
+  margin-bottom: 2rem;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Chart Navigation Styles */
+.chart-navigation {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.chart-navigation h2 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.nav-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.nav-btn {
+  background-color: var(--light-gray);
+  border: 2px solid var(--medium-gray);
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: var(--transition);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-btn:hover {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.nav-btn.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.nav-btn.active:hover {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+/* Chart Container */
+.chart-container {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  min-height: 500px;
+  max-height: 800px; /* Maximum height for charts */
+}
+
+.chart-container h2 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  text-align: center;
+  border-bottom: 2px solid var(--secondary-color);
+  padding-bottom: 0.5rem;
+}
+
+/* Chart Section Styles */
+.chart-section {
+  display: none;
+  animation: fadeIn 0.3s ease-in-out;
+  height: 100%;
+  max-height: 700px; /* Maximum height for chart sections */
+}
+
+.chart-section.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Controls */
+.controls {
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.controls label {
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.controls select {
+  padding: 0.5rem;
+  border: 1px solid var(--medium-gray);
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: white;
+  transition: var(--transition);
+}
+
+.controls select:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Filters */
+.filters h2 {
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.filter-group {
+  flex: 1;
+  min-width: 200px;
+}
+
+.filter-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.filter-group select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--medium-gray);
+  border-radius: 4px;
+  background-color: white;
+  transition: var(--transition);
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Multi-Select Styles */
+.select-container {
+  position: relative;
+}
+
+.multi-select-container {
+  position: relative;
+  width: 100%;
+}
+
+.multi-select-display {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--medium-gray);
+  border-radius: 4px;
+  background-color: white;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.multi-select-display:hover {
+  border-color: var(--secondary-color);
+}
+
+.multi-select-display::after {
+  content: "▼";
+  font-size: 0.8rem;
+  color: var(--dark-gray);
+}
+
+.multi-select-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border: 1px solid var(--medium-gray);
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  box-shadow: var(--shadow);
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.select-all-container {
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid var(--medium-gray);
+  background-color: var(--light-gray);
+  font-weight: 600;
+}
+
+.select-all-container input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
+
+.select-all-container label {
+  font-weight: 600;
+  cursor: pointer;
+  margin: 0;
+}
+
+.options-container {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.option-item {
+  padding: 0.75rem 0.5rem;
+  display: flex;
+  align-items: center;
+  transition: var(--transition);
+  border-bottom: 1px solid rgba(189, 195, 199, 0.2);
+}
+
+.option-item:last-child {
+  border-bottom: none;
+}
+
+.option-item input[type="checkbox"] {
+  margin-right: 0.5rem;
+}
+
+.option-item label {
+  cursor: pointer;
+  margin: 0;
+  flex: 1;
+}
+
+/* Chart Elements */
+#line-chart,
+#pie-chart,
+#bar-chart,
+#fines-chart,
+#dot-map,
+#grouped-bar-chart,
+#radar-chart {
+  width: 100%;
+  min-height: 400px;
+  max-height: 700px; /* Maximum height for individual charts */
+  cursor: move; /* Show move cursor to indicate draggable */
+  margin: 0 auto; /* Center charts */
+  max-width: 1200px; /* Maximum width for charts */
+}
+
+.axis {
+  font-size: 12px;
+  color: var(--text-color);
+}
+
+.axis-label {
+  font-size: 14px;
+  font-weight: 600;
+  fill: var(--text-color);
+}
+
+.line {
+  fill: none;
+  stroke-width: 2px;
+}
+
+.dot {
+  fill: white;
+  stroke-width: 2px;
+  r: 4px;
+  transition: var(--transition);
+}
+
+.dot:hover {
+  r: 6px;
+}
+
+.tooltip {
+  position: absolute;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  border-radius: 4px;
+  pointer-events: none;
+  font-size: 0.9rem;
+  z-index: 100;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.legend {
+  font-size: 12px;
+}
+
+.legend-item {
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.legend-item:hover {
+  opacity: 0.7;
+}
+
+.bar {
+  transition: var(--transition);
+}
+
+.bar:hover {
+  opacity: 0.8;
+}
+
+.pie-slice {
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.pie-slice:hover {
+  transform: scale(1.05);
+}
+
+/* Reset Zoom Button */
+.reset-zoom-button {
+  transition: opacity 0.3s ease;
+}
+
+.reset-zoom-button:hover rect {
+  fill: rgba(255, 255, 255, 1);
+  stroke: var(--secondary-color);
+  stroke-width: 2px;
+}
+
+.reset-zoom-button:hover text {
+  fill: var(--secondary-color);
+}
+
+/* SVG Containers */
+svg.svg-content-responsive {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 1200px;
+  max-height: 700px;
+  margin: 0 auto;
+}
+
+/* Footer */
+footer {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
+.footer-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.footer-content a {
+  color: var(--secondary-color);
+}
+
+footer p {
+  margin-bottom: 0.5rem;
+}
+
+/* Error Message */
+.error-message {
+  margin-bottom: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .chart-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  nav ul {
+    margin-top: 1rem;
+  }
+
+  .controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filter-controls {
+    flex-direction: column;
+  }
+
+  .filter-group {
+    width: 100%;
+  }
+
+  .chart-container {
+    padding: 1rem;
+  }
+
+  .nav-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-btn {
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .chart-navigation {
+    padding: 1rem;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  nav li {
+    margin: 0.5rem 0;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .chart-navigation h2 {
+    font-size: 1.3rem;
+  }
+
+  .nav-btn {
+    padding: 0.7rem 0.8rem;
+    font-size: 0.8rem;
+  }
+}
+
+#dot-map {
+    width: 100%;
+    height: 500px; /* CRITICAL: Set a height for the map container */
+    overflow: hidden;
+}
+
+#dot-map svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Single Select Styling to Match Multi-Select */
+.filter-group select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--medium-gray);
+  border-radius: 4px;
+  background-color: white;
+  transition: var(--transition);
+  font-size: 1rem;
+  cursor: pointer;
+  appearance: none; /* Remove default dropdown arrow */
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem; /* Make room for custom arrow */
+}
+
+.filter-group select:hover {
+  border-color: var(--secondary-color);
+  background-color: #f8f9fa;
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: var(--secondary-color);
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+  background-color: white;
+}
+
+/* Style select options */
+.filter-group select option {
+  padding: 0.5rem;
+  background-color: white;
+  color: var(--text-color);
+}
+
+.filter-group select option:hover {
+  background-color: var(--light-gray);
+}
+
+/* Make single select container consistent with multi-select */
+.filter-group .select-container {
+  position: relative;
+  width: 100%;
+}
+
+/* Add focus ring similar to multi-select */
+.filter-group select:focus-visible {
+  outline: 2px solid var(--secondary-color);
+  outline-offset: 2px;
+}
+
+/* Ensure consistent height with multi-select */
+.filter-group select,
+.multi-select-display {
+  min-height: 2.5rem;
+  display: flex;
+  align-items: center;
+}
+
+/* Custom styling for disabled state */
+.filter-group select:disabled {
+  background-color: var(--light-gray);
+  color: var(--dark-gray);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Responsive adjustments for single select */
+@media (max-width: 768px) {
+  .filter-group select {
+    font-size: 0.9rem;
+    padding: 0.4rem;
+    padding-right: 2.2rem;
+    background-size: 0.9rem;
+    background-position: right 0.6rem center;
+  }
+}
+
+@media (max-width: 480px) {
+  .filter-group select {
+    font-size: 0.8rem;
+    padding: 0.35rem;
+    padding-right: 2rem;
+    background-size: 0.8rem;
+    background-position: right 0.5rem center;
+  }
+}

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Road Safety Enforcement Data Visualisation</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">BITRE Data Visualisation</div>
+      <nav>
+        <ul>
+          <li><a href="#home" class="active">Home</a></li>
+          <li><a href="#dashboard">Dashboard</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1>Welcome to the Road Safety Enforcement Data Visualisation</h1>
+        <p>
+          Explore trends in road safety enforcement across Australia from 2008
+          to present
+        </p>
+      </section>
+
+      <!-- Introduction Section -->
+      <section id="introduction" class="intro-section">
+        <h2>Introduction</h2>
+        <p>
+          Speeding remains a leading cause of road injuries and fatalities in
+          Australia. Although BITRE has collected enforcement data since 2008,
+          the public Police Enforcement Dashboard lacks detail and
+          interactivity. In 2023, BITRE began gathering finer-grained data
+          (e.g., location, age group, detection method), but these new
+          dimensions are not yet easily explored by the public.
+        </p>
+      </section>
+
+      <!-- Goals Section -->
+      <section id="goals" class="goals-section">
+        <h2>Project Goals</h2>
+        <p>
+          This dashboard enables users to explore and understand key aspects of
+          Australian speeding-fines data:
+        </p>
+        <ul>
+          <li>
+            How have total speeding fines trended annually from 2008 to 2022?
+          </li>
+          <li>What is the age-group distribution of speeding fines in 2023?</li>
+          <li>
+            How do different detection methods (camera vs. police) compare over
+            the full period?
+          </li>
+          <li>
+            Which jurisdictions incur the highest volume of speeding fines, and
+            how are they distributed geographically?
+          </li>
+        </ul>
+      </section>
+
+      <!-- Data Source and Methodology Section -->
+      <section id="methodology" class="methodology-section">
+        <h2>Data Source and Methodology</h2>
+        <p>
+          All data were obtained from BITRE’s Police Enforcement Dashboard and
+          CSV exports. Starting in 2023, BITRE began publishing detailed
+          enforcement records (age bracket, detection method, and jurisdiction).
+          The cleaned CSV files used here are included in the footer of our footer.
+        </p>
+        <p>Data preparation was performed in KNIME:</p>
+        <ul>
+          <li>
+            <strong>Import:</strong> Raw CSVs were read using KNIME’s CSV Reader
+            nodes.
+          </li>
+          <li>
+            <strong>Cleaning:</strong> Whitespace was trimmed from categorical
+            fields, duplicate rows removed, and any records with missing or
+            invalid values filtered out.
+          </li>
+          <li>
+            <strong>Aggregation:</strong> GroupBy nodes summed fines by year,
+            age group, detection method, or jurisdiction to produce four final
+            tables.
+          </li>
+          <li>
+            <strong>Export:</strong> Cleaned and aggregated tables were written
+            back to CSV via KNIME’s CSV Writer nodes.
+          </li>
+        </ul>
+      </section>
+
+      <!-- Dashboard Section - Initially Hidden -->
+      <section id="dashboard" class="dashboard-section" style="display: none">
+        <!-- Chart Navigation Buttons -->
+        <section class="chart-navigation">
+          <h2>Select Visualisation</h2>
+          <div class="nav-buttons">
+            <button
+              id="btn-jurisdiction"
+              class="nav-btn"
+              data-chart="jurisdiction"
+            >
+              Fines by Jurisdiction
+            </button>
+            <button
+              id="btn-grouped-bar"
+              class="nav-btn"
+              data-chart="grouped-bar"
+            >
+              Detection Method Trends
+            </button>
+            <button id="btn-age" class="nav-btn" data-chart="age">
+              Fines by Age Group
+            </button>
+            <button id="btn-radar" class="nav-btn" data-chart="radar">
+              Detection Method Radar
+            </button>
+          </div>
+        </section>
+
+        <!-- Dynamic Filter Section -->
+        <section class="filters">
+          <h2>Filter Data</h2>
+          <div class="filter-controls" id="dynamic-filters">
+            <p>Select a visualisation to see available filters.</p>
+          </div>
+        </section>
+
+        <!-- Chart and Description Container - Two Separate Boxes -->
+        <div class="chart-and-description-container">
+          <!-- Chart Container -->
+          <section class="chart-container">
+            <!-- Default Welcome State - Explicitly shown -->
+            <div
+              id="welcome-state"
+              class="chart-section active"
+              style="display: block"
+            >
+              <div class="welcome-content">
+                <h2>Welcome to the Road Safety Data Dashboard</h2>
+                <div class="welcome-icon">📊</div>
+                <p>
+                  Please select a visualisation from the buttons at the top of
+                  the page to explore Australian road safety enforcement data
+                  from 2008-2023.
+                </p>
+                <div class="available-charts">
+                  <h3>Available Visualisations:</h3>
+                  <ul>
+                    <li>
+                      <strong>Fines by Jurisdiction</strong> - Interactive map
+                      showing fine amounts across Australian states
+                    </li>
+                    <li>
+                      <strong>Detection Method Trends</strong> - Bar chart
+                      comparing enforcement methods over time
+                    </li>
+                    <li>
+                      <strong>Fines by Age Group</strong> - Pie chart showing
+                      fine distribution by driver age
+                    </li>
+                    <li>
+                      <strong>Detection Method Radar</strong> - Radar chart
+                      comparing total fines by enforcement type
+                    </li>
+                  </ul>
+                </div>
+                <p class="instruction">
+                  👆 Click any visualisation button at the top of the page to
+                  get started!
+                </p>
+              </div>
+            </div>
+
+            <!-- Jurisdiction Dot Map -->
+            <div
+              id="jurisdiction-chart-section"
+              class="chart-section"
+              style="display: none"
+            >
+              <h2>Total Fines by Jurisdiction</h2>
+              <div id="dot-map"></div>
+            </div>
+
+            <!-- Grouped Bar Chart -->
+            <div
+              id="grouped-bar-chart-section"
+              class="chart-section"
+              style="display: none"
+            >
+              <h2>Total Fines by Detection Method and Years</h2>
+              <div id="grouped-bar-chart"></div>
+            </div>
+
+            <!-- Age Group Pie Chart -->
+            <div
+              id="age-chart-section"
+              class="chart-section"
+              style="display: none"
+            >
+              <h2>Total Fines by Age Group</h2>
+              <div id="pie-chart"></div>
+            </div>
+
+            <!-- Radar Chart -->
+            <div
+              id="radar-chart-section"
+              class="chart-section"
+              style="display: none"
+            >
+              <h2>Total Fines by Detection Method</h2>
+              <div id="radar-chart"></div>
+            </div>
+          </section>
+
+          <!-- Description Container - Separate Box -->
+          <section class="description-container">
+            <!-- Welcome Description - Explicitly shown -->
+            <div
+              id="welcome-description"
+              class="chart-description active"
+              style="display: block"
+            >
+              <h3>Getting Started</h3>
+              <p>
+                This dashboard provides interactive visualisations of Australian
+                road safety enforcement data collected by BITRE from 2008 to
+                2023.
+              </p>
+              <strong>How to use this dashboard:</strong>
+              <ul>
+                <li>
+                  <b>Select a Chart:</b> Click any of the four visualisation
+                  buttons above
+                </li>
+                <li>
+                  <b>Apply Filters:</b> Use the filter controls to focus on
+                  specific years or methods
+                </li>
+                <li>
+                  <b>Interact:</b> Hover over chart elements for detailed
+                  information
+                </li>
+                <li>
+                  <b>Zoom & Pan:</b> Most charts support zooming and panning for
+                  detailed exploration
+                </li>
+              </ul>
+              <strong>About the Data:</strong>
+              <p>
+                The data includes speeding fines, detection methods (cameras,
+                radar, etc.), age groups of offenders, and jurisdictional
+                breakdowns across all Australian states and territories.
+              </p>
+              <strong>Tips:</strong>
+              <ul>
+                <li>
+                  Start with the jurisdiction map for a geographic overview
+                </li>
+                <li>
+                  Use the detection method trends to see changes over time
+                </li>
+                <li>Check the age group breakdown for demographic insights</li>
+                <li>Compare enforcement methods with the radar chart</li>
+              </ul>
+            </div>
+
+            <!-- Jurisdiction Description -->
+            <div
+              id="jurisdiction-description"
+              class="chart-description"
+              style="display: none"
+            >
+              <h3>Total Speeding Fines by Jurisdiction 2008-2023</h3>
+              <p>
+                This map shows how much money was collected in road safety fines
+                across each Australian state and territory for the years you
+                choose. Each circle sits over its state or territory, and bigger
+                circles mean more fines. Hover a circle to see the exact amount
+                and the state name.
+              </p>
+              <strong>What can you learn?</strong>
+              <ul>
+                <li>
+                  See which states or territories have the highest or lowest
+                  fines.
+                </li>
+                <li>
+                  Compare totals between places like Queensland and Victoria.
+                </li>
+                <li>Pick specific years to see how things change over time.</li>
+              </ul>
+              <strong>How to use:</strong>
+              <ul>
+                <li>
+                  <b>Select Year:</b> Use the dropdown to choose which year to
+                  show.
+                </li>
+                <li>
+                  <b>Zoom & Pan:</b> Scroll or pinch to zoom in, drag to move
+                  around the map.
+                </li>
+                <li><b>Tooltip:</b> Hover over a circle for details.</li>
+              </ul>
+              <strong>Data Source:</strong>
+              <p>
+                Data comes from the Australian government's BITRE road safety
+                reports (2008–2023).
+              </p>
+            </div>
+
+            <!-- Grouped Bar Description -->
+            <div
+              id="grouped-bar-description"
+              class="chart-description"
+              style="display: none"
+            >
+              <h3>
+                Speeding Fines by Year and Detection Method Trend 2008-2022
+              </h3>
+              <p>
+                This bar chart lets you compare how much money was collected
+                from different types of road safety enforcement (like speed
+                cameras or drug testing) for each year you pick. Each group of
+                bars is a year, and each color shows a different enforcement
+                method.
+              </p>
+              <strong>What can you learn?</strong>
+              <ul>
+                <li>Spot which methods brought in the most fines each year.</li>
+                <li>
+                  See if some methods are becoming more or less common over
+                  time.
+                </li>
+                <li>Compare years side by side to find trends or changes.</li>
+              </ul>
+              <strong>How to use:</strong>
+              <ul>
+                <li>
+                  <b>Select Year(s):</b> Choose years to compare using the
+                  dropdown.
+                </li>
+                <li>
+                  <b>Legend:</b> Click a method's name or color to hide or show
+                  it.
+                </li>
+                <li><b>Tooltip:</b> Hover or tap a bar for details.</li>
+                <li>
+                  <b>Zoom & Pan:</b> If there are lots of years, scroll or drag
+                  to see more.
+                </li>
+              </ul>
+              <strong>Data Source:</strong>
+              <p>
+                Based on BITRE's yearly summaries of fines by enforcement
+                method.
+              </p>
+            </div>
+
+            <!-- Age Group Description -->
+            <div
+              id="age-description"
+              class="chart-description"
+              style="display: none"
+            >
+              <h3>Total Speeding Fines by Age Group 2023</h3>
+              <p>
+                This pie chart shows what share of total fines came from each
+                age group of drivers across 2023. Each slice is an age group,
+                and bigger slices mean more fines.
+              </p>
+              <strong>What can you learn?</strong>
+              <ul>
+                <li>See which age groups received the most fines overall.</li>
+                <li>
+                  Get a quick overview of how fines are spread across ages.
+                </li>
+              </ul>
+              <strong>How to use:</strong>
+              <ul>
+                <li>
+                  <b>Tooltip:</b> Hover or tap a slice to see the exact amount
+                  and percentage.
+                </li>
+                <li><b>Legend:</b> Use the legend to highlight slices.</li>
+                <li>
+                  <b>No Year Filter:</b> This chart always only shows data from
+                  2023.
+                </li>
+              </ul>
+              <strong>Data Source:</strong>
+              <p>
+                Totals are from BITRE's reports, adding up fines for each age
+                group across all years.
+              </p>
+            </div>
+
+            <!-- Radar Description -->
+            <div
+              id="radar-description"
+              class="chart-description"
+              style="display: none"
+            >
+              <h3>Total Fines by Detection Method Comparison 2023</h3>
+              <p>
+                This radar chart compares the total fines collected by each type
+                of enforcement method (like speed cameras, drug testing, or
+                police-issued fines). Each spoke is a method, and the further
+                out the point, the higher the total fines.
+              </p>
+              <strong>What can you learn?</strong>
+              <ul>
+                <li>
+                  See which enforcement methods collected the most or least
+                  fines overall.
+                </li>
+                <li>Compare methods side by side in a single view.</li>
+                <li>Turn methods on or off to focus your comparison.</li>
+              </ul>
+              <strong>How to use:</strong>
+              <ul>
+                <li>
+                  <b>Legend:</b> Click a method's name or color to hide or show
+                  it.
+                </li>
+                <li><b>Tooltip:</b> Hover or tap a point for details.</li>
+                <li>
+                  <b>Zoom & Pan:</b> Scroll or drag to zoom in and move around.
+                </li>
+                <li><b>Responsive:</b> The chart resizes for your device.</li>
+              </ul>
+              <strong>Data Source:</strong>
+              <p>
+                Based on BITRE's data, adding up fines for each method in 2023.
+              </p>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-content">
+        <div class="data-source">
+          Data Source:
+          <a href="https://www.bitre.gov.au/" target="_blank"
+            >Bureau of Infrastructure and Transport Research Economics
+            (BITRE)</a
+          >
+        </div>
+        <div class="copyright">
+          © 2025 Swinburne University | Data Visualisation Project
+        </div>
+      </div>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/dotMap.js"></script>
+    <script src="js/groupedBarChart.js"></script>
+    <script src="js/pieChart.js"></script>
+    <script src="js/radarChart.js"></script>
+    <script src="js/chartNavigation.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+      // Handle navigation between Home and Dashboard
+      document.addEventListener("DOMContentLoaded", () => {
+        const homeLink = document.querySelector('nav a[href="#home"]');
+        const dashboardLink = document.querySelector(
+          'nav a[href="#dashboard"]'
+        );
+        const dashboardSection = document.querySelector("#dashboard");
+
+        // Show home sections by default
+        const homeSections = document.querySelectorAll(
+          ".hero, .intro-section, .goals-section, .methodology-section"
+        );
+
+        homeLink.addEventListener("click", (e) => {
+          e.preventDefault();
+          // Show home sections
+          homeSections.forEach((section) => (section.style.display = "block"));
+          dashboardSection.style.display = "none";
+
+          // Update active nav
+          homeLink.classList.add("active");
+          dashboardLink.classList.remove("active");
+        });
+
+        dashboardLink.addEventListener("click", (e) => {
+          e.preventDefault();
+          // Hide home sections, show dashboard
+          homeSections.forEach((section) => (section.style.display = "none"));
+          dashboardSection.style.display = "block";
+
+          // Update active nav
+          dashboardLink.classList.add("active");
+          homeLink.classList.remove("active");
+
+          // Ensure welcome state is shown when dashboard opens
+          setTimeout(() => {
+            // Reset to welcome state when dashboard is opened
+            if (window.chartNavigation) {
+              window.chartNavigation.switchChart("welcome");
+            } else {
+              // Fallback: manually ensure welcome state is visible
+              document.querySelectorAll(".chart-section").forEach((section) => {
+                section.style.display = "none";
+                section.classList.remove("active");
+              });
+              document
+                .querySelectorAll(".chart-description")
+                .forEach((desc) => {
+                  desc.style.display = "none";
+                  desc.classList.remove("active");
+                });
+
+              const welcomeState = document.getElementById("welcome-state");
+              const welcomeDesc = document.getElementById(
+                "welcome-description"
+              );
+              if (welcomeState) {
+                welcomeState.style.display = "block";
+                welcomeState.classList.add("active");
+              }
+              if (welcomeDesc) {
+                welcomeDesc.style.display = "block";
+                welcomeDesc.classList.add("active");
+              }
+
+              // Clear any active button states
+              document.querySelectorAll(".nav-btn").forEach((btn) => {
+                btn.classList.remove("active");
+              });
+
+              // Set filter message
+              const filtersContainer =
+                document.getElementById("dynamic-filters");
+              if (filtersContainer) {
+                filtersContainer.innerHTML =
+                  "<p>Select a visualisation to see available filters.</p>";
+              }
+            }
+          }, 100);
+        });
+      });
+    </script>
+  </body>
+</html>

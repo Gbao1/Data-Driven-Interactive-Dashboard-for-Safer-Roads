@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Road Safety Enforcement Data Visualisation</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- D3.js -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+
+    <header>
+        <div class="logo">BITRE Data Visualisation</div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#dashboard">Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Road Safety Enforcement Data</h1>
+            <p>Explore trends in road safety enforcement across Australia from 2008 to present</p>
+        </section>
+
+        <!-- Chart Navigation Buttons -->
+        <section class="chart-navigation">
+            <h2>Select Visualisation</h2>
+            <div class="nav-buttons">
+                <button id="btn-jurisdiction" class="nav-btn active" data-chart="jurisdiction">
+                    Fines by Jurisdiction
+                </button>
+                <button id="btn-grouped-bar" class="nav-btn" data-chart="grouped-bar">
+                    Detection Method Trends
+                </button>
+                <button id="btn-age" class="nav-btn" data-chart="age">
+                    Fines by Age Group
+                </button>
+                <button id="btn-radar" class="nav-btn" data-chart="radar">
+                    Detection Method Radar
+                </button>
+            </div>
+        </section>
+
+        <!-- Dynamic Filter Section -->
+        <section class="filters">
+            <h2>Filter Data</h2>
+            <div class="filter-controls" id="dynamic-filters">
+            <!-- Filters will be populated dynamically based on selected chart -->
+            </div>
+        </section>
+
+        <!-- Chart Container with Dynamic Filters -->
+        <section class="chart-container">
+            <!-- Jurisdiction Dot Map -->
+            <div id="jurisdiction-chart-section" class="chart-section active">
+                <h2>Total Fines by Jurisdiction</h2>
+                <div id="dot-map"></div>
+            </div>
+
+            <!-- Grouped Bar Chart -->
+            <div id="grouped-bar-chart-section" class="chart-section">
+                <h2>Total Fines by Detection Method and Years</h2>
+                <div id="grouped-bar-chart"></div>
+            </div>
+
+            <!-- Age Group Pie Chart -->
+            <div id="age-chart-section" class="chart-section">
+                <h2>Total Fines by Age Group 2023</h2>
+                <div id="pie-chart"></div>
+            </div>
+
+            <!-- Radar Chart -->
+            <div id="radar-chart-section" class="chart-section">
+                <h2>Total Fines by Detection Method</h2>
+                <div id="radar-chart"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="data-source">
+                Data Source: <a href="https://www.bitre.gov.au/" target="_blank">Bureau of Infrastructure and Transport Research Economics (BITRE)</a>
+            </div>
+            <div class="copyright">
+                © 2025 Swinburne University | Data Visualisation Project
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="js/data.js"></script>
+    <script src="js/dotMap.js"></script>
+    <script src="js/groupedBarChart.js"></script>
+    <script src="js/pieChart.js"></script>
+    <script src="js/radarChart.js"></script>
+    <script src="js/chartNavigation.js"></script>
+    <script src="js/main.js"></script>
+
+</body>
+</html>
